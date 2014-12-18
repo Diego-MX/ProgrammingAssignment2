@@ -26,8 +26,7 @@ cacheSolve <- function(X, ...){
     INV <- X$getInverse( )
     if(!is.null(INV)){
         name <- deparse(substitute(X))
-        sentence <- paste("I found the inverse of %s in the ",
-                        "cache... getting it for you.")
+        sentence <- "I found the inverse of %s in the cache... getting it for you."
         message(sprintf(sentence, name))
         return(INV)}
     else{
