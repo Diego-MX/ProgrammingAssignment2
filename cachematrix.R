@@ -2,7 +2,7 @@
 
 ## MAKECACHEMATRIX and CACHESOLVE pair up together to make getting the inverse of a matrix an efficient process.
 
-## MAKECACHEMATRIX(X) initializes a "super"-matrix XX from the original X by defining its caching methods for 'setting' and 'getting' itself and its inverse.
+## MAKECACHEMATRIX(X) initializes a "super"-matrix XX from the "regular" matrix X by defining its caching methods for 'setting' and 'getting' itself and its inverse.
 makeCacheMatrix <- function(X=matrix( )){
     INV <- NULL
     setSelf    <- function(Y){
@@ -12,7 +12,7 @@ makeCacheMatrix <- function(X=matrix( )){
     setInverse <- function(I){
         INV <<- I}
     getInverse <- function( ){INV}
-    # The list of methods make X a "super"   XX.
+    # The list of methods make X a "super" XX.
     return(list(setSelf=setSelf,
                 getSelf=getSelf,
                 setInverse=setInverse,
@@ -20,21 +20,22 @@ makeCacheMatrix <- function(X=matrix( )){
 
 
 ## CACHESOLVE(XX) gets the inverse of the "super"-matrix XX, and hence of original X.  In order to do this, it checks if it has been calculated and cached, if not it then calculates and caches it.
-cacheSolve <- function(XX, ...){
-    INV <- XX$getInverse( )
-    if(!is.null(INV)){
-        name <- deparse(substitute(XX))
-        mssg <- paste("I found the inverse of %s in the ",
-            "cache... getting it for you.")
+cacheSolve <- function(XX, ...){    # Differentiate matrix X from "super"-matrix XX. 
+    inv <- XX$getInverse( )         # Keep in small letters, until it's verified to be the inverse.
+    if(!is.null(inv)){
+        name <- deparse(substitute(XX))     # Gets its name as a string for screen communication.  
+        mssg <- paste("I found the inverse of `%s` in the ",
+            "cache... getting it for ya.")
         message(sprintf(mssg, name))
+        INV  <- inv                 # Upgrade the name into CAPS to return the inverse. 
         return(INV)}
     else{
         name <- deparse(substitute(XX))
-        mssg <- paste("I don't have the inverse of %s in the",
+        mssg <- paste("I don't have the inverse of `%s` in the",
             "cache... it might take a bit longer to calculate",
             "it.")
         message(sprintf(mssg, name))
-        X   <- XX$getSelf( )
+        X   <- XX$getSelf( )        # Use library function SOLVE on "regular" matrix X to get inverse. 
         INV <- solve(X, ...)
         XX$setInverse(INV)
         return(INV)}}
