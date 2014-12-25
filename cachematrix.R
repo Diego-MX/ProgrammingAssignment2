@@ -11,10 +11,13 @@ makeCacheMatrix <- function(mat=matrix( )){
     
     setSelf    <- function(m){
         mat <<- m
-        inv <<- NULL}
+        inv <<- NULL
+        return( )}
     getSelf    <- function( ){mat}
+    
     setInverse <- function(i){
-        inv <<- i}
+        inv <<- i
+        return( )}
     getInverse <- function( ){inv}
 
     # This list of methods is what make MAT a cache CMAT.
